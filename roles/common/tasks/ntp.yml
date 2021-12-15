@@ -1,0 +1,14 @@
+## Description ##
+# Enables time sync to ntp_server
+
+## Required Vars ##
+# ntp_server - IP of server to get time
+
+---
+- name: NTP | Set NTP Servers
+  ios_config:
+    lines:
+      - ntp server {{ ntp_server }}
+      - clock timezone CDT -6 0
+      - clock summer-time CDT recurring
+    save_when: changed

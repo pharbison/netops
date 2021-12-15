@@ -1,0 +1,13 @@
+## Description ##
+# Enables logging to syslog_server
+
+## Required Vars ##
+# syslog_server - IP of server to send syslog messages
+
+---
+- name: Logging | Setup Syslog Server
+  ios_config:
+    lines:
+      - logging trap notifications
+      - logging host {{ syslog_server }}
+    save_when: changed

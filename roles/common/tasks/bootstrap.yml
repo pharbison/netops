@@ -1,0 +1,82 @@
+## Description ##
+# Sets VTP mode to transparent
+# Removes DNS Resolution
+# Configures all access ports except last one with 
+#   voice_vlan, sticky mac, and portfast
+# Configures te1/0/1 - 2 as trunk ports
+# Enables logging synchronous
+
+## Required Vars ##
+# voice_vlan - VLAN number of VOIP network
+
+---
+- name: Bootstrap | Set VTP to Transparent
+  ios_config:
+    lines:
+      - "vtp mode transparent"
+    save_when: changed
+
+- name: Bootstrap | Remove DNS Resolution
+  ios_config:
+    lines:
+      - "no ip domain-lookup"
+    match: line
+    save_when: changed
+
+- name: Bootstrap | Get access ports
+  set_fact:
+    access_ports: "{{ ansible_net_interfaces | dict2items | selectattr('value.mediatype', 'equalto', '10/100/1000BaseTX') | list }}"
+
+- name: Bootstrap | Get last access port
+  set_fact:
+    last_access_port: "{{ access_ports | last }}"
+
+- name: Bootstrap | Configure Access Ports
+  ios_config:
+    running_config: "{{ current_config.stdout[0] }}"
+    src: roles/common/templates/interfaces.j2
+    save_when: changed
+
+- name: Bootstrap | Configure Trunk Ports on te1/0/1
+  ios_config:
+    lines:
+      - "switchport mode trunk"
+      - "load-interval 30"
+    parents: interface TenGigabitEthernet1/0/1
+    save_when: changed
+  when: "'TenGigabitEthernet1/0/1' in ansible_net_interfaces"
+
+- name: Bootstrap | Configure Trunk Ports on te1/0/2
+  ios_config:
+    lines:
+      - "switchport mode trunk"
+      - "load-interval 30"
+    parents: interface TenGigabitEthernet1/0/2
+    save_when: changed
+  when: "'TenGigabitEthernet1/0/2' in ansible_net_interfaces"
+
+- name: Bootstrap | Configure Console Access
+  ios_config:
+    lines:
+      - "logging synchronous"
+    parents: line con 0
+    match: line
+    save_when: changed
+
+- name: Bootstrap | Configure VTY 0 4
+  ios_config:
+    lines:
+      - "logging synchronous"
+      - "transport input ssh"
+    parents: line vty 0 4
+    match: line
+    save_when: changed
+
+- name: Bootstrap | Configure VTY 5 15
+  ios_config:
+    lines:
+      - "logging synchronous"
+      - "transport input ssh"
+    parents: line vty 5 15
+    match: line
+    save_when: changed

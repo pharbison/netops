@@ -1,0 +1,12 @@
+{% for item in access_ports%}
+{% if item.key != last_access_port.key %}
+interface {{item.key}}
+  switchport mode access
+  switchport voice vlan {{ voice_vlan }}
+  switchport port-security maximum 2
+  switchport port-security violation restrict
+  switchport port-security mac-address sticky
+  load-interval 30
+  spanning-tree portfast
+{% endif %}
+{% endfor %}
