@@ -32,12 +32,16 @@
   tasks:
     - name: Gather Facts
       ios_facts:
+      tags:
+        - facts
 
     - name: Download running-config
       ios_command:
         commands:
           - show run
       register: current_config
+      tags:
+        - config
 
     - include: roles/common/tasks/sync-acl-10.yml
     - include: roles/common/tasks/disable-web-server.yml

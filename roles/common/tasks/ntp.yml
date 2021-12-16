@@ -12,3 +12,5 @@
       - clock timezone CDT -6 0
       - clock summer-time CDT recurring
     save_when: changed
+  tags:
+    - logs

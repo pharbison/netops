@@ -10,6 +10,8 @@
     running_config: "{{ current_config.stdout[0] }}"
     src: roles/common/templates/access-list.j2
     save_when: changed
+  tags:
+    - acl
 
 - name: Sync ACL 10 | Apply ACL to VTY 0 4
   ios_config:
@@ -17,6 +19,8 @@
       - access-class 10 in
     parents: line vty 0 4
     save_when: changed
+  tags:
+    - acl
 
 - name: Sync ACL 10 | Apply ACL to VTY 5 15
   ios_config:
@@ -24,16 +28,22 @@
       - access-class 10 in
     parents: line vty 5 15
     save_when: changed
+  tags:
+    - acl
 
 - name: Sync ACL 10 | Get current ACL 10
   ios_command:
     commands:
       - "show running-config | include access-list 10"
   register: current_acl
+  tags:
+    - acl
 
 - name: Sync ACL 10 | Parse current ACL Definitions
   set_fact:
     acl_ips: "{{ current_acl | regex_replace('access-list\ 10\ permit\ ', '') }}"
+  tags:
+    - acl
 
 - name: Sync ACL 10 | Remove IPs not in current list
   ios_command:
@@ -45,3 +55,5 @@
   changed_when: True
   with_items: "{{ acl_ips.stdout_lines }}"
   notify: "Save config"
+  tags:
+    - acl

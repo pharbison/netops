@@ -10,6 +10,8 @@
     lines:
       - aaa new-model
     save_when: changed
+  tags:
+    - tacacs
 
 - name: IOS15 | TACACS | Create TACACS+ Server Definition
   ios_config:
@@ -20,6 +22,8 @@
     parents: tacacs server {{ item }}
     save_when: changed
   with_items: "{{ tacacs_servers }}"
+  tags:
+    - tacacs
 
 - name: IOS15 | TACACS | Create AAA Group Server
   ios_config:
@@ -28,6 +32,8 @@
     parents: aaa group server tacacs+ LOGIN_AUTH
     save_when: changed
   with_items: "{{ tacacs_servers }}"
+  tags:
+    - tacacs
 
 - name: IOS15 | TACACS | Setup AAA with TACACS+
   ios_config:
@@ -35,16 +41,22 @@
       - aaa authentication login default group LOGIN_AUTH local
       - aaa authorization exec default group LOGIN_AUTH local
     save_when: changed
+  tags:
+    - tacacs
 
 - name: IOS15 | TACACS | Get current TACACS+ Definitions
   ios_command:
     commands:
       - show run | include tacacs server
   register: current_tacacs
+  tags:
+    - tacacs
 
 - name: IOS15 | TACACS | Parse current TACACS+ Definitions
   set_fact:
     tacacs_ips: "{{ current_tacacs | regex_replace('tacacs\ server\ ', '') }}"
+  tags:
+    - tacacs
 
 - name: IOS15 | TACACS | Remove old TACACS+ Definitions
   ios_command:
@@ -54,6 +66,8 @@
   with_items: "{{ tacacs_ips.stdout_lines }}"
   changed_when: True
   when: "item|string not in tacacs_servers"
+  tags:
+    - tacacs
 
 - name: IOS15 | TACACS | Remove old server from AAA group
   ios_command:
@@ -64,3 +78,5 @@
   with_items: "{{ tacacs_ips.stdout_lines }}"
   changed_when: True
   when: "item|string not in tacacs_servers"
+  tags:
+    - tacacs

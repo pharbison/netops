@@ -14,3 +14,5 @@
     - "tacacs-server host {{ tacacs_servers.0 }} port {{ tacacs_port }} key 7 {{ tacacs_key }}"
     match: line
     save_when: modified
+  tags:
+    - tacacs

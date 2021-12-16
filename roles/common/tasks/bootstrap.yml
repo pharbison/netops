@@ -15,6 +15,8 @@
     lines:
       - "vtp mode transparent"
     save_when: changed
+    tags:
+      - vtp
 
 - name: Bootstrap | Remove DNS Resolution
   ios_config:
@@ -22,20 +24,28 @@
       - "no ip domain-lookup"
     match: line
     save_when: changed
+    tags:
+      - dns
 
 - name: Bootstrap | Get access ports
   set_fact:
     access_ports: "{{ ansible_net_interfaces | dict2items | selectattr('value.mediatype', 'equalto', '10/100/1000BaseTX') | list }}"
+  tags:
+    - ports
 
 - name: Bootstrap | Get last access port
   set_fact:
     last_access_port: "{{ access_ports | last }}"
+  tags:
+    - ports
 
 - name: Bootstrap | Configure Access Ports
   ios_config:
     running_config: "{{ current_config.stdout[0] }}"
     src: roles/common/templates/interfaces.j2
     save_when: changed
+  tags:
+    - ports
 
 - name: Bootstrap | Configure Trunk Ports on te1/0/1
   ios_config:
@@ -45,6 +55,8 @@
     parents: interface TenGigabitEthernet1/0/1
     save_when: changed
   when: "'TenGigabitEthernet1/0/1' in ansible_net_interfaces"
+  tags:
+    - ports
 
 - name: Bootstrap | Configure Trunk Ports on te1/0/2
   ios_config:
@@ -54,6 +66,8 @@
     parents: interface TenGigabitEthernet1/0/2
     save_when: changed
   when: "'TenGigabitEthernet1/0/2' in ansible_net_interfaces"
+  tags:
+    - ports
 
 - name: Bootstrap | Configure Console Access
   ios_config:
@@ -62,6 +76,8 @@
     parents: line con 0
     match: line
     save_when: changed
+  tags:
+    - console
 
 - name: Bootstrap | Configure VTY 0 4
   ios_config:
@@ -71,6 +87,8 @@
     parents: line vty 0 4
     match: line
     save_when: changed
+  tags:
+    - console
 
 - name: Bootstrap | Configure VTY 5 15
   ios_config:
@@ -80,3 +98,5 @@
     parents: line vty 5 15
     match: line
     save_when: changed
+  tags:
+    - console
