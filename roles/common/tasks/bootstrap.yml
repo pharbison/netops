@@ -15,8 +15,8 @@
     lines:
       - "vtp mode transparent"
     save_when: changed
-    tags:
-      - vtp
+  tags:
+    - vtp
 
 - name: Bootstrap | Remove DNS Resolution
   ios_config:
@@ -24,8 +24,8 @@
       - "no ip domain-lookup"
     match: line
     save_when: changed
-    tags:
-      - dns
+  tags:
+    - dns
 
 - name: Bootstrap | Get access ports
   set_fact:
