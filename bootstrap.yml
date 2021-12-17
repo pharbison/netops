@@ -18,6 +18,7 @@
 # syslog_server - IP of server to send syslog messages
 # ntp_server - IP of server to get time
 # tacacs_server - IP of TACACS+ Server for auth
+# tacacs_port - Port of TACAS+ service
 # voice_vlan - VLAN number of VOIP network
 
 ---
@@ -30,9 +31,6 @@
   become: yes
   become_method: enable
   gather_facts: false
-  vars:
-    ip_list: "{{ lookup('url', ip_list_url, wantlist=True) }}"
-
   tasks:
     - include: roles/common/tasks/bootstrap.yml
     - include: roles/common/tasks/spanning-tree.yml
