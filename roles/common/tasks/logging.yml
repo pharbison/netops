@@ -12,4 +12,4 @@
       - logging host {{ syslog_server }}
     save_when: changed
   tags:
-    - logs
+    - logging
