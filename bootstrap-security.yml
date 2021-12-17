@@ -2,8 +2,9 @@
 # This playbook will setup the below 
 # security options.
 # Sync ACL for SSH access with ip_list_url
+# Disables built-in web server
+# Setup NTP server for accurate time
 # Setup logging to central server 
-# Setup NTP server for accurate time 
 # Setup TACACS+ for authentication 
 
 ## Required Vars ##
