@@ -15,7 +15,7 @@
 - name: Spanning-Tree | Add BPDUGUARD as portfast default
   cisco.ios.ios_config:
     lines:
-      - spanning-tree portfast bpduguard default
+      - spanning-tree portfast edge bpduguard default
     save_when: changed
   tags:
     - spanning-tree
