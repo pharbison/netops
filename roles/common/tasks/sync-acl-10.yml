@@ -5,8 +5,15 @@
 # ip_list_url - List of IPs at a URL
 
 ---
+- name: Sync ACL 10 | Get IP List
+  ansible.builtin.uri:
+    url: ip_list_url
+  register: ip_list
+  tags:
+    - acl
+
 - name: Sync ACL 10 | Add Access List 10
-  ios_config:
+  cisco.ios.ios_config:
     running_config: "{{ current_config.stdout[0] }}"
     src: roles/common/templates/access-list.j2
     save_when: changed
@@ -14,7 +21,7 @@
     - acl
 
 - name: Sync ACL 10 | Apply ACL to VTY 0 4
-  ios_config:
+  cisco.ios.ios_config:
     lines:
       - access-class 10 in
     parents: line vty 0 4
@@ -23,7 +30,7 @@
     - acl
 
 - name: Sync ACL 10 | Apply ACL to VTY 5 15
-  ios_config:
+  cisco.ios.ios_config:
     lines:
       - access-class 10 in
     parents: line vty 5 15
@@ -32,7 +39,7 @@
     - acl
 
 - name: Sync ACL 10 | Get current ACL 10
-  ios_command:
+  cisco.ios.ios_command:
     commands:
       - "show running-config | include access-list 10"
   register: current_acl
@@ -40,13 +47,13 @@
     - acl
 
 - name: Sync ACL 10 | Parse current ACL Definitions
-  set_fact:
+  ansible.builtin.set_fact:
     acl_ips: "{{ current_acl | regex_replace('access-list\ 10\ permit\ ', '') }}"
   tags:
     - acl
 
 - name: Sync ACL 10 | Remove IPs not in current list
-  ios_command:
+  cisco.ios.ios_command:
     commands:
       - config terminal
       - ip access-list standard 10

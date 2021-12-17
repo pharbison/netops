@@ -6,7 +6,7 @@
 
 ---
 - name: IOS12 | TACACS | Add single TACACS+ server
-  ios_config:
+  cisco.ios.ios_config:
     lines:
     - "aaa new-model"
     - "aaa authentication login default group tacacs+ local"

@@ -26,17 +26,17 @@
 
   handlers:
     - name: Save config
-      ios_command:
+      cisco.ios.ios_command:
         commands: "write memory"
 
   tasks:
     - name: Gather Facts
-      ios_facts:
+      cisco.ios.ios_facts:
       tags:
         - facts
 
     - name: Download running-config
-      ios_command:
+      cisco.ios.ios_command:
         commands:
           - show run
       register: current_config

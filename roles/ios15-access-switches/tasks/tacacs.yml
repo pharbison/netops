@@ -6,7 +6,7 @@
 
 ---
 - name: IOS15 | TACACS | Enable aaa new-model
-  ios_config:
+  cisco.ios.ios_config:
     lines:
       - aaa new-model
     save_when: changed
@@ -14,7 +14,7 @@
     - tacacs
 
 - name: IOS15 | TACACS | Create TACACS+ Server Definition
-  ios_config:
+  cisco.ios.ios_config:
     lines:
       - address ipv4 {{ item }}
       - key 7 {{ tacacs_key }}
@@ -26,7 +26,7 @@
     - tacacs
 
 - name: IOS15 | TACACS | Create AAA Group Server
-  ios_config:
+  cisco.ios.ios_config:
     lines:
       - server name {{ item }}
     parents: aaa group server tacacs+ LOGIN_AUTH
@@ -36,7 +36,7 @@
     - tacacs
 
 - name: IOS15 | TACACS | Setup AAA with TACACS+
-  ios_config:
+  cisco.ios.ios_config:
     lines:
       - aaa authentication login default group LOGIN_AUTH local
       - aaa authorization exec default group LOGIN_AUTH local
@@ -45,7 +45,7 @@
     - tacacs
 
 - name: IOS15 | TACACS | Get current TACACS+ Definitions
-  ios_command:
+  cisco.ios.ios_command:
     commands:
       - show run | include tacacs server
   register: current_tacacs
@@ -53,13 +53,13 @@
     - tacacs
 
 - name: IOS15 | TACACS | Parse current TACACS+ Definitions
-  set_fact:
+  ansible.builtin.set_fact:
     tacacs_ips: "{{ current_tacacs | regex_replace('tacacs\ server\ ', '') }}"
   tags:
     - tacacs
 
 - name: IOS15 | TACACS | Remove old TACACS+ Definitions
-  ios_command:
+  cisco.ios.ios_command:
     commands:
       - conf t
       - no tacacs server {{ item }}
@@ -70,7 +70,7 @@
     - tacacs
 
 - name: IOS15 | TACACS | Remove old server from AAA group
-  ios_command:
+  cisco.ios.ios_command:
     commands:
       - conf t
       - aaa group server tacacs+ LOGIN_AUTH

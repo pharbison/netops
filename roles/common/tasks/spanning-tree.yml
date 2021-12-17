@@ -4,7 +4,7 @@
 
 ---
 - name: Spanning-Tree | Allows switch to self heal from BPDUGUARD
-  ios_config:
+  cisco.ios.ios_config:
     lines:
       - errdisable recovery cause bpduguard
     save_when: changed
@@ -13,7 +13,7 @@
 
 ## Needs updating in case "portfast edge" is needed
 - name: Spanning-Tree | Add BPDUGUARD as portfast default
-  ios_config:
+  cisco.ios.ios_config:
     lines:
       - spanning-tree portfast bpduguard default
     save_when: changed

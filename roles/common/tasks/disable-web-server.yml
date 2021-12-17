@@ -3,7 +3,7 @@
 
 ---
 - name: Web Server | Disable built-in web server
-  ios_config:
+  cisco.ios.ios_config:
     lines:
       - "no ip http server"
       - "no ip http secure-server"

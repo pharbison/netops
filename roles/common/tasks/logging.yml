@@ -6,7 +6,7 @@
 
 ---
 - name: Logging | Setup Syslog Server
-  ios_config:
+  cisco.ios.ios_config:
     lines:
       - logging trap notifications
       - logging host {{ syslog_server }}

@@ -11,7 +11,7 @@
 
 ---
 - name: Bootstrap | Set VTP to Transparent
-  ios_config:
+  cisco.ios.ios_config:
     lines:
       - "vtp mode transparent"
     save_when: changed
@@ -19,7 +19,7 @@
     - vtp
 
 - name: Bootstrap | Remove DNS Resolution
-  ios_config:
+  cisco.ios.ios_config:
     lines:
       - "no ip domain-lookup"
     match: line
@@ -28,19 +28,19 @@
     - dns
 
 - name: Bootstrap | Get access ports
-  set_fact:
+  ansible.builtin.set_fact:
     access_ports: "{{ ansible_net_interfaces | dict2items | selectattr('value.mediatype', 'equalto', '10/100/1000BaseTX') | list }}"
   tags:
     - ports
 
 - name: Bootstrap | Get last access port
-  set_fact:
+  ansible.builtin.set_fact:
     last_access_port: "{{ access_ports | last }}"
   tags:
     - ports
 
 - name: Bootstrap | Configure Access Ports
-  ios_config:
+  cisco.ios.ios_config:
     running_config: "{{ current_config.stdout[0] }}"
     src: roles/common/templates/interfaces.j2
     save_when: changed
@@ -48,7 +48,7 @@
     - ports
 
 - name: Bootstrap | Configure Trunk Ports on te1/0/1
-  ios_config:
+  cisco.ios.ios_config:
     lines:
       - "switchport mode trunk"
       - "load-interval 30"
@@ -59,7 +59,7 @@
     - ports
 
 - name: Bootstrap | Configure Trunk Ports on te1/0/2
-  ios_config:
+  cisco.ios.ios_config:
     lines:
       - "switchport mode trunk"
       - "load-interval 30"
@@ -70,7 +70,7 @@
     - ports
 
 - name: Bootstrap | Configure Console Access
-  ios_config:
+  cisco.ios.ios_config:
     lines:
       - "logging synchronous"
     parents: line con 0
@@ -80,7 +80,7 @@
     - console
 
 - name: Bootstrap | Configure VTY 0 4
-  ios_config:
+  cisco.ios.ios_config:
     lines:
       - "logging synchronous"
       - "transport input ssh"
@@ -91,7 +91,7 @@
     - console
 
 - name: Bootstrap | Configure VTY 5 15
-  ios_config:
+  cisco.ios.ios_config:
     lines:
       - "logging synchronous"
       - "transport input ssh"

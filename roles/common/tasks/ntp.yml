@@ -6,7 +6,7 @@
 
 ---
 - name: NTP | Set NTP Servers
-  ios_config:
+  cisco.ios.ios_config:
     lines:
       - ntp server {{ ntp_server }}
       - clock timezone CDT -6 0
