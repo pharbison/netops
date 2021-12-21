@@ -5,6 +5,32 @@
 # syslog_server - IP of server to send syslog messages
 
 ---
+- name: Logging | Get current syslog hosts
+  cisco.ios.ios_command:
+    commands:
+      - "show running-config | include logging host"
+  register: current_syslog
+  tags:
+    - logging
+
+- name: Logging | Parse current syslog hosts
+  ansible.builtin.set_fact:
+    syslog_hosts: "{{ current_syslog | regex_replace('logging\ host\ ', '') }}"
+  tags:
+    - logging
+
+- name: Logging | Remove syslog hosts not defined
+  cisco.ios.ios_command:
+    commands:
+      - config terminal
+      - no logging host {{ item }}
+  when: item|string not in syslog_server
+  changed_when: True
+  with_items: "{{ syslog_hosts.stdout_lines }}"
+  notify: "Save config"
+  tags:
+    - logging
+
 - name: Logging | Setup Syslog Server
   cisco.ios.ios_config:
     lines:
