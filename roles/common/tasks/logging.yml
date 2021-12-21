@@ -8,10 +8,33 @@
 - name: Logging | Setup Syslog Server
   cisco.ios.ios_config:
     lines:
-      - service timestamps log datetime localtime
-      - login on-success log
-      - login on-failure log
       - logging host {{ syslog_server }}
     save_when: changed
+  tags:
+    - logging
+
+- name: Logging | Set use localtime in logs
+  cisco.ios.ios_config:
+    lines:
+      - service timestamps log datetime localtime
+    save_when: changed
+  tags:
+    - logging
+
+- name: Logging | Log auth success/failure
+  cisco.ios.ios_config:
+    lines:
+      - login on-success log
+      - login on-failure log
+    save_when: changed
+  tags:
+    - logging
+
+- name: Logging | Set logging trap level
+  cisco.ios.ios_config:
+    lines:
+      - logging trap informational
+    save_when: changed
+  when: '"logging trap" in current_config.stdout[0]'
   tags:
     - logging
