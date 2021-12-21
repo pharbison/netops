@@ -8,6 +8,8 @@
 - name: Logging | Setup Syslog Server
   cisco.ios.ios_config:
     lines:
+      - login on-success log
+      - login on-failure log
       - logging trap notifications
       - logging host {{ syslog_server }}
     save_when: changed
