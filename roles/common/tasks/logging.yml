@@ -8,6 +8,7 @@
 - name: Logging | Setup Syslog Server
   cisco.ios.ios_config:
     lines:
+      - service timestamps log datetime localtime
       - login on-success log
       - login on-failure log
       - logging trap notifications
