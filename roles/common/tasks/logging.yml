@@ -11,7 +11,7 @@
       - service timestamps log datetime localtime
       - login on-success log
       - login on-failure log
-      - logging trap notifications
+      - logging trap informational
       - logging host {{ syslog_server }}
     save_when: changed
   tags:
