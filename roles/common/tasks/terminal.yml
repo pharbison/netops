@@ -1,0 +1,44 @@
+## Description ##
+# Remove DNS resolution on mistyped commands
+# Setup logging synchronous on VTY and console
+---
+- name: Terminal | Remove DNS Resolution
+  cisco.ios.ios_config:
+    lines:
+      - "no ip domain-lookup"
+    match: line
+    save_when: changed
+  tags:
+    - terminal
+
+- name: Terminal | Configure Terminal Access
+  cisco.ios.ios_config:
+    lines:
+      - "logging synchronous"
+    parents: line con 0
+    match: line
+    save_when: changed
+  tags:
+    - terminal
+
+- name: Terminal | Configure VTY 0 4
+  cisco.ios.ios_config:
+    lines:
+      - "logging synchronous"
+      - "transport input ssh"
+    parents: line vty 0 4
+    match: line
+    save_when: changed
+  tags:
+    - terminal
+
+- name: Terminal | Configure VTY 5 15
+  cisco.ios.ios_config:
+    lines:
+      - "logging synchronous"
+      - "transport input ssh"
+    parents: line vty 5 15
+    match: line
+    save_when: changed
+  tags:
+    - terminal

@@ -16,7 +16,7 @@
 
 ---
 - name: Cisco | Hardening
-  hosts: all
+  hosts: switches
   connection: network_cli
   become: yes
   become_method: enable
@@ -48,6 +48,7 @@
     - include: roles/common/tasks/disable-web-server.yml
     - include: roles/common/tasks/ntp.yml
     - include: roles/common/tasks/logging.yml
+    - include: roles/common/tasks/terminal.yml
 
     - include: roles/ios15-access-switches/tasks/tacacs.yml
       when: ansible_net_version|string is regex("^15")

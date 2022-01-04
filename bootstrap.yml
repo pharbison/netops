@@ -34,3 +34,4 @@
   tasks:
     - include: roles/common/tasks/bootstrap.yml
     - include: roles/common/tasks/spanning-tree.yml
+    - include: roles/common/tasks/terminal.yml
