@@ -1,0 +1,10 @@
+---
+- name: Archive | Setup auto-archive
+  cisco.ios.config:
+    lines:
+      - path sftp://{{ sftp_user }}:{{ sftp_password }}@{{ sftp_server }}{{ sftp_path }}/$h$t.conf
+      - write-memory
+    parents: archive
+    save_when: changed
+  tags: 
+    - archive
