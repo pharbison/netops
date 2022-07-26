@@ -49,12 +49,21 @@
       tags:
         - config
 
-    #- include: roles/common/tasks/sync-acl-10.yml
+    - include: roles/common/tasks/sync-acl-10.yml
+      when: ip_list_url is defined
+
     - include: roles/common/tasks/disable-web-server.yml
+
     - include: roles/common/tasks/ntp.yml
+      when: ntp_server is defined
+
     - include: roles/common/tasks/logging.yml
+      when: syslog_server is defined
+      
     - include: roles/common/tasks/terminal.yml
+
     - include: roles/common/tasks/archive.yml
+      when: sftp_server is defined and sftp_user is defined and sftp_password is defined and sftp_path is defined
 
     - include: roles/ios15-access-switches/tasks/tacacs.yml
       when: ansible_net_version|string is regex("^15")
