@@ -3,6 +3,8 @@
 
 ## Required Vars ##
 # tacacs_server - IP of TACACS+ Server for auth
+# tacacs_port - Port number running tacacs service
+# tacacs_key - Cisco type 7 encrypted key
 
 ---
 - name: IOS15 | TACACS | Enable aaa new-model
