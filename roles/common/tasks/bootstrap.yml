@@ -36,8 +36,10 @@
       - conf t 
       - int {{ last_access_port.key }}
       - spanning-tree portfast ?
-    register: portfast_types
-
+  register: portfast_types
+  tags:
+    - ports
+    
 - name: Bootstrap | Configure Access Ports Edge
   cisco.ios.ios_config:
     running_config: "{{ current_config.stdout[0] }}"
