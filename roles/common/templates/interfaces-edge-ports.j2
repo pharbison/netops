@@ -7,6 +7,6 @@ interface {{item.key}}
   switchport port-security violation restrict
   switchport port-security mac-address sticky
   load-interval 30
-  spanning-tree portfast
+  spanning-tree portfast edge
 {% endif %}
 {% endfor %}

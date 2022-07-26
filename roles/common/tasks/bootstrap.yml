@@ -30,11 +30,29 @@
   tags:
     - ports
 
+- name: Bootstrap | Get portfast type
+  ansible.builtin.ios_commands:
+    commands:
+      - conf t 
+      - int {{ last_access_port.key }}
+      - spanning-tree portfast ?
+    register: portfast_types
+
+- name: Bootstrap | Configure Access Ports Edge
+  cisco.ios.ios_config:
+    running_config: "{{ current_config.stdout[0] }}"
+    src: roles/common/templates/interfaces-edge-ports.j2
+    save_when: changed
+  when: '"edge" in portfast_types'
+  tags:
+    - ports
+
 - name: Bootstrap | Configure Access Ports
   cisco.ios.ios_config:
     running_config: "{{ current_config.stdout[0] }}"
     src: roles/common/templates/interfaces.j2
     save_when: changed
+  when: '"edge" not in portfast_types'
   tags:
     - ports
 
