@@ -12,6 +12,7 @@
 # syslog_server - IP of server to send syslog messages
 # ntp_server - IP of server to get time
 # tacacs_servers - List of IPs for TACACS+ Server for auth
+# tacacs_port - Port number running tacacs service
 # tacacs_key - Cisco type 7 encrypted key 
 
 ---
