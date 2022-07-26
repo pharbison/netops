@@ -59,8 +59,6 @@
 
     - include: roles/common/tasks/logging.yml
       when: syslog_server is defined
-      
-    - include: roles/common/tasks/terminal.yml
 
     - include: roles/common/tasks/archive.yml
       when: sftp_server is defined and sftp_user is defined and sftp_password is defined and sftp_path is defined
