@@ -14,6 +14,10 @@
 # tacacs_servers - List of IPs for TACACS+ Server for auth
 # tacacs_port - Port number running tacacs service
 # tacacs_key - Cisco type 7 encrypted key 
+# sftp_user - User for SFTP auto-archive
+# sftp_password - Password for SFTP auto-archive
+# sftp_server - Server for SFTP auto-archive
+# sftp_path - File path for SFTP auto-archive
 
 ---
 - name: Cisco | Hardening

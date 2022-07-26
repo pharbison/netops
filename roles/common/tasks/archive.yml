@@ -1,3 +1,12 @@
+## Description ##
+# Setup for auto-archiving config on write-memory
+
+## Required Vars ##
+# sftp_user - User for SFTP auto-archive
+# sftp_password - Password for SFTP auto-archive
+# sftp_server - Server for SFTP auto-archive
+# sftp_path - File path for SFTP auto-archive
+
 ---
 - name: Archive | Setup auto-archive
   cisco.ios.config:

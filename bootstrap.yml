@@ -20,6 +20,10 @@
 # tacacs_server - IP of TACACS+ Server for auth
 # tacacs_port - Port of TACAS+ service
 # voice_vlan - VLAN number of VOIP network
+# sftp_user - User for SFTP auto-archive
+# sftp_password - Password for SFTP auto-archive
+# sftp_server - Server for SFTP auto-archive
+# sftp_path - File path for SFTP auto-archive
 
 ---
 - name: Bootstrap | Run bootstrap-security playbook
